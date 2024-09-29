@@ -3,8 +3,8 @@ return {
   -- copilot
   {
     "zbirenbaum/copilot.lua",
-    lazy_load = false,
     cmd = "Copilot",
+    event = "InsertEnter",
     build = ":Copilot auth",
     opts = {
       suggestion = { enabled = false },

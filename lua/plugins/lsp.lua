@@ -54,8 +54,7 @@ return {
           -- Jump to the type definition of the word under your cursor.
           map("gy", vim.lsp.buf.type_definition, "Goto T[y]pe Definition")
 
-          -- WARN: This is not Goto Definition, this is Goto Declaration.
-          --  For example, in C this would take you to the header.
+          -- Jump to the declaration of the word under your cursor (c, c++)
           map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
           -- Show the hover information for the word under your cursor.
@@ -143,20 +142,7 @@ return {
       capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
       -- Enable the following language servers
-      local servers = {
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = "Replace",
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              diagnostics = { disable = { "missing-fields" } },
-            },
-          },
-        },
-        stylua = {},
-      }
+      local servers = {}
 
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
@@ -170,17 +156,14 @@ return {
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        "rust-analyzer",
-        "stylua",
-        "gopls",
         "gofumpt",
-        "goimports",
         "golangci-lint",
-        "sonarlint-language-server",
-        "clangd",
-        "codelldb",
-        "clang-format",
+        "gopls",
+        "lua-language-server",
         "nil",
+        "rust-analyzer",
+        "selene",
+        "stylua",
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
