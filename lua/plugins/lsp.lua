@@ -67,6 +67,7 @@ return {
           },
         },
         ["nil_ls"] = {},
+        ["rust_analyzer"] = {},
       },
     },
     config = function(_, opts)
