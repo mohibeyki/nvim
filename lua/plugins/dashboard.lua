@@ -33,7 +33,6 @@ return {
             { action = "lua require'telescope.builtin'.live_grep{}",     desc = " Find Text",       icon = " ", key = "g" },
             { action = "lua require'persistence'.load()",                desc = " Restore Session", icon = " ", key = "s" },
             { action = "Lazy",                                           desc = " Lazy",            icon = "󰒲 ", key = "l" },
-            { action = "Mason",                                          desc = " Mason",           icon = "󰒓 ", key = "m" },
             { action = function() vim.api.nvim_input("<cmd>qa<cr>") end, desc = " Quit",            icon = " ", key = "q" },
           },
           footer = function()

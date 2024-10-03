@@ -8,7 +8,9 @@ return {
       local lint = require("lint")
       lint.linters_by_ft = {
         fish = { "fish" },
-        markdown = { "markdownlint" },
+        go = { "golangcilint" },
+        markdown = { "markdownlint-cli2" },
+        nix = { "statix" },
       }
 
       -- Create autocommand which carries out the actual linting
