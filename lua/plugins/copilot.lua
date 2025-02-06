@@ -4,10 +4,19 @@ return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = "InsertEnter",
     build = ":Copilot auth",
+    event = "BufReadPost",
     opts = {
-      suggestion = { enabled = false },
+      suggestion = {
+        enabled = true,
+        auto_trigger = true,
+        hide_during_completion = true,
+        keymap = {
+          accept = false, -- handled by nvim-cmp / blink.cmp
+          next = "<M-]>",
+          prev = "<M-[>",
+        },
+      },
       panel = { enabled = false },
       filetypes = {
         markdown = true,
@@ -16,9 +25,24 @@ return {
     },
   },
 
-  -- copilot cmp source
+  -- copilot cmp
   {
-    "zbirenbaum/copilot-cmp",
-    opts = {},
+    "saghen/blink.cmp",
+    optional = true,
+    dependencies = { "giuxtaposition/blink-cmp-copilot" },
+    opts = {
+      sources = {
+        default = { "copilot" },
+        providers = {
+          copilot = {
+            name = "copilot",
+            module = "blink-cmp-copilot",
+            kind = "Copilot",
+            score_offset = 100,
+            async = true,
+          },
+        },
+      },
+    },
   },
 }

@@ -1,3 +1,5 @@
+local icons = require("config/icons").icons
+
 return {
 
   -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -23,10 +25,34 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       { "j-hui/fidget.nvim", opts = {} },
-      { "hrsh7th/cmp-nvim-lsp" },
     },
     opts = {
+      diagnostics = {
+        underline = true,
+        update_in_insert = false,
+        virtual_text = {
+          spacing = 4,
+          source = "if_many",
+          prefix = "●",
+          -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+          -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+          -- prefix = "icons",
+        },
+        severity_sort = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = icons.diagnostics.Error,
+            [vim.diagnostic.severity.WARN] = icons.diagnostics.Warn,
+            [vim.diagnostic.severity.HINT] = icons.diagnostics.Hint,
+            [vim.diagnostic.severity.INFO] = icons.diagnostics.Info,
+          },
+        },
+      },
       inlay_hints = {
+        enabled = true,
+        exclude = {},
+      },
+      codelens = {
         enabled = true,
       },
       document_highlight = {
@@ -66,9 +92,18 @@ return {
             },
           },
         },
-        ["nil_ls"] = {},
+        ["nixd"] = {},
         ["rust_analyzer"] = {},
       },
+      capabilities = {
+        workspace = {
+          fileOperations = {
+            didRename = true,
+            willRename = true,
+          },
+        },
+      },
+      format = {},
     },
     config = function(_, opts)
       -- LSP servers and clients are able to communicate to each other what features they support.
@@ -107,20 +142,24 @@ return {
 
           map("<leader>cl", "<cmd>LspInfo<cr>", "[C]lient [L]ist")
 
-          -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
-          map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-
-          -- Find references for the word under your cursor.
-          map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
-          map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-
-          -- Jump to the type definition of the word under your cursor.
-          map("gy", vim.lsp.buf.type_definition, "Goto T[y]pe Definition")
+          map("gd", function()
+            Snacks.picker.lsp_definitions()
+          end, "[G]oto [D]efinition")
+          map("gr", function()
+            Snacks.picker.lsp_references()
+          end, "[G]oto [R]eferences")
+          map("gI", function()
+            Snacks.picker.lsp_implementations()
+          end, "[G]oto [I]mplementation")
+          map("gy", function()
+            Snacks.picker.lsp_type_definitions()
+          end, "[G]oto T[y]pe Definition")
+          map("<leader>ss", function()
+            Snacks.picker.lsp_symbols()
+          end, "LSP [S]ymbols")
+          map("<leader>sS", function()
+            Snacks.picker.lsp_workspace_symbols()
+          end, "LSP Workspace [S]ymbols")
 
           -- Jump to the declaration of the word under your cursor (c, c++)
           map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
@@ -147,19 +186,6 @@ return {
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
           map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename")
-
-          -- Jump to the type of the word under your cursor.
-          --  Useful when you're not sure what type a variable is and you want to see
-          --  the definition of its *type*, not where it was *defined*.
-          map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-
-          -- Fuzzy find all the symbols in your current document.
-          --  Symbols are things like variables, functions, types, etc.
-          map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-
-          -- Fuzzy find all the symbols in your current workspace.
-          --  Similar to document symbols, except searches over your entire project.
-          map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.

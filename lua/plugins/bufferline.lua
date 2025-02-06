@@ -5,15 +5,20 @@ return {
   -- Beautiful tabs for neovim
   {
     "akinsho/bufferline.nvim",
-    event = "BufWinEnter",
+    event = "VeryLazy",
     keys = {
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
       { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
       { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete Other Buffers" },
       { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete Buffers to the Right" },
       { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete Buffers to the Left" },
-      { "<leader>bd", "<cmd>BufDel<CR>", desc = "Delete Buffer" },
-      { "<leader>bD", "<cmd>BufDelAll<cr>", desc = "Delete All Buffers" },
+      {
+        "<leader>bd",
+        function()
+          Snacks.bufdelete()
+        end,
+        desc = "Delete Buffer",
+      },
       { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
       { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
       { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
@@ -23,23 +28,26 @@ return {
     },
     opts = {
       options = {
+        close_command = function(n)
+          Snacks.bufdelete(n)
+        end,
+        right_mouse_command = function(n)
+          Snacks.bufdelete(n)
+        end,
         diagnostics = "nvim_lsp",
         always_show_bufferline = true,
         diagnostics_indicator = function(_, _, diag)
-          local icons = icons.diagnostics
-          local ret = (diag.error and icons.Error .. diag.error .. " " or "") .. (diag.warning and icons.Warn .. diag.warning or "")
+          local d_icons = icons.diagnostics
+          local ret = (diag.error and d_icons.Error .. diag.error .. " " or "") .. (diag.warning and d_icons.Warn .. diag.warning or "")
           return vim.trim(ret)
         end,
         offsets = {
           {
-            filetype = "neo-tree",
-            text = "Neo-tree",
-            highlight = "Directory",
-            text_align = "left",
+            filetype = "snacks_layout_box",
           },
         },
-        ---@param opts bufferline.IconFetcherOpts
         get_element_icon = function(opts)
+          ---@diagnostic disable-next-line: undefined-field
           return icons.ft[opts.filetype]
         end,
       },
@@ -50,19 +58,11 @@ return {
       vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
         callback = function()
           vim.schedule(function()
+            ---@diagnostic disable-next-line: undefined-global
             pcall(nvim_bufferline)
           end)
         end,
       })
     end,
-  },
-
-  -- Delete buffer utility, makes it so that deleting a buffer does not mess with your workspace!
-  {
-    "ojroques/nvim-bufdel",
-    event = "VeryLazy",
-    opts = {
-      quit = false,
-    },
   },
 }
