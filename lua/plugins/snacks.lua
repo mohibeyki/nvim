@@ -65,6 +65,7 @@ return {
         enabled = true,
         actions = {
           trouble_open = function(...)
+            ---@diagnostic disable-next-line: undefined-field
             return require("trouble.sources.snacks").actions.trouble_open.action(...)
           end,
         },
