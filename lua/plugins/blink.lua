@@ -51,8 +51,7 @@ return {
         enabled = false,
       },
       keymap = {
-        preset = "enter",
-        ["<C-y>"] = { "select_and_accept" },
+        preset = "default",
       },
     },
     config = function(_, opts)

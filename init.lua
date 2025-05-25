@@ -5,7 +5,7 @@ require("config.keymaps")
 require("config.options")
 
 -- Load plugins
-require("config.lazynvim")
+require("config.lazy")
 
 -- Load auto commands
 require("config.autocmds")
