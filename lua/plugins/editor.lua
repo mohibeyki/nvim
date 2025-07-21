@@ -98,4 +98,7 @@ return {
 
   -- library used by other plugins
   { "nvim-lua/plenary.nvim", lazy = true },
+
+  -- plugin for interacting with tmux
+  { "aserowy/tmux.nvim", event = "VeryLazy", opts = {} },
 }
