@@ -1,5 +1,28 @@
--- Add which-key plugin
-vim.pack.add({ "https://github.com/folke/which-key.nvim" })
+return {
+  "folke/which-key.nvim",
+  event = "VeryLazy",
+  opts = {},
+  config = function()
+    require("which-key").setup()
 
--- Setup which-key
-require("which-key").setup()
+    -- Register group names (LazyVim style)
+    require("which-key").add({
+      { "<leader>b", group = "buffer" },
+      { "<leader>c", group = "code" },
+      { "<leader>f", group = "file/find" },
+      { "<leader>g", group = "git" },
+      { "<leader>h", group = "hunk" },
+      { "<leader>n", group = "notifications" },
+      { "<leader>q", group = "quit/session" },
+      { "<leader>s", group = "search" },
+      { "<leader>sn", group = "noice" },
+      { "<leader>u", group = "ui" },
+      { "<leader>x", group = "diagnostics/quickfix" },
+      { "[", group = "prev" },
+      { "]", group = "next" },
+      { "g", group = "goto" },
+      { "gs", group = "surround" },
+      { "z", group = "fold" },
+    })
+  end,
+}

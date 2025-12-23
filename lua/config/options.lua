@@ -14,5 +14,5 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Clear search highlights on Esc or Ctrl-C
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlights' })
-vim.keymap.set('n', '<C-c>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlights' })
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
+vim.keymap.set("n", "<C-c>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
