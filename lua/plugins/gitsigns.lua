@@ -14,7 +14,7 @@ return {
   keys = {
     -- Navigation
     {
-      "]c",
+      "]h",
       function()
         if vim.wo.diff then
           vim.cmd.normal({ "]c", bang = true })
@@ -25,7 +25,7 @@ return {
       desc = "Next Hunk",
     },
     {
-      "[c",
+      "[h",
       function()
         if vim.wo.diff then
           vim.cmd.normal({ "[c", bang = true })
@@ -35,53 +35,52 @@ return {
       end,
       desc = "Prev Hunk",
     },
-    -- Actions
-    { "<leader>hs", ":Gitsigns stage_hunk<CR>", mode = { "n", "v" }, desc = "Stage Hunk" },
-    { "<leader>hr", ":Gitsigns reset_hunk<CR>", mode = { "n", "v" }, desc = "Reset Hunk" },
+    { "<leader>ghs", ":Gitsigns stage_hunk<CR>", mode = { "n", "v" }, desc = "Stage Hunk" },
+    { "<leader>ghr", ":Gitsigns reset_hunk<CR>", mode = { "n", "v" }, desc = "Reset Hunk" },
     {
-      "<leader>hS",
+      "<leader>ghS",
       function()
         require("gitsigns").stage_buffer()
       end,
       desc = "Stage Buffer",
     },
     {
-      "<leader>hu",
+      "<leader>ghu",
       function()
         require("gitsigns").undo_stage_hunk()
       end,
       desc = "Undo Stage Hunk",
     },
     {
-      "<leader>hR",
+      "<leader>ghR",
       function()
         require("gitsigns").reset_buffer()
       end,
       desc = "Reset Buffer",
     },
     {
-      "<leader>hp",
+      "<leader>ghp",
       function()
         require("gitsigns").preview_hunk()
       end,
       desc = "Preview Hunk",
     },
     {
-      "<leader>hb",
+      "<leader>ghb",
       function()
         require("gitsigns").blame_line({ full = true })
       end,
       desc = "Blame Line",
     },
     {
-      "<leader>hd",
+      "<leader>ghd",
       function()
         require("gitsigns").diffthis()
       end,
       desc = "Diff This",
     },
     {
-      "<leader>hD",
+      "<leader>ghD",
       function()
         require("gitsigns").diffthis("~")
       end,

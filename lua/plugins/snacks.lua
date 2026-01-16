@@ -146,6 +146,76 @@ return {
       end,
       desc = "Commands",
     },
+    {
+      "<leader>sd",
+      function()
+        require("snacks").picker.diagnostics({ filter = { buf = 0 } })
+      end,
+      desc = "Document Diagnostics",
+    },
+    {
+      "<leader>sD",
+      function()
+        require("snacks").picker.diagnostics()
+      end,
+      desc = "Workspace Diagnostics",
+    },
+    {
+      "<leader>ss",
+      function()
+        require("snacks").picker.lsp_symbols()
+      end,
+      desc = "LSP Symbols",
+    },
+    {
+      "<leader>sS",
+      function()
+        require("snacks").picker.lsp_workspace_symbols()
+      end,
+      desc = "LSP Workspace Symbols",
+    },
+    {
+      "<leader>sR",
+      function()
+        require("snacks").picker.resume()
+      end,
+      desc = "Resume Last Picker",
+    },
+    {
+      "<leader>sm",
+      function()
+        require("snacks").picker.marks()
+      end,
+      desc = "Marks",
+    },
+    {
+      "<leader>sr",
+      function()
+        require("snacks").picker.registers()
+      end,
+      desc = "Registers",
+    },
+    {
+      "<leader>\"",
+      function()
+        require("snacks").picker.registers()
+      end,
+      desc = "Registers",
+    },
+    {
+      "<leader>sj",
+      function()
+        require("snacks").picker.jumps()
+      end,
+      desc = "Jumps",
+    },
+    {
+      "<leader>sq",
+      function()
+        require("snacks").picker.qflist()
+      end,
+      desc = "Quickfix List",
+    },
 
     -- Buffer operations (<leader>b)
     {
@@ -191,6 +261,27 @@ return {
         require("snacks").picker.git_status()
       end,
       desc = "Git Status",
+    },
+    {
+      "<leader>gl",
+      function()
+        require("snacks").picker.git_log()
+      end,
+      desc = "Git Log",
+    },
+    {
+      "<leader>gL",
+      function()
+        require("snacks").picker.git_log_line()
+      end,
+      desc = "Git Log (Line)",
+    },
+    {
+      "<leader>gf",
+      function()
+        require("snacks").picker.git_log_file()
+      end,
+      desc = "Git Log (File)",
     },
 
     -- Explorer (<leader>e)
@@ -256,12 +347,52 @@ return {
       desc = "Dismiss All Notifications",
     },
     {
+      "<leader>ud",
+      function()
+        vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+      end,
+      desc = "Toggle Diagnostics",
+    },
+    {
+      "<leader>uf",
+      function()
+        vim.g.autoformat = not vim.g.autoformat
+        vim.notify("Autoformat " .. (vim.g.autoformat and "enabled" or "disabled"))
+      end,
+      desc = "Toggle Format on Save",
+    },
+    {
+      "<leader>uL",
+      function()
+        vim.wo.relativenumber = not vim.wo.relativenumber
+      end,
+      desc = "Toggle Relative Line Numbers",
+    },
+    {
+      "<leader>us",
+      function()
+        vim.wo.spell = not vim.wo.spell
+      end,
+      desc = "Toggle Spelling",
+    },
+    {
+      "<leader>uc",
+      function()
+        local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
+        vim.o.conceallevel = vim.o.conceallevel == 0 and conceallevel or 0
+      end,
+      desc = "Toggle Conceal",
+    },
+    {
       "<leader>nh",
       function()
         require("snacks").notifier.show_history()
       end,
       desc = "Notification History",
     },
+
+    -- New file
+    { "<leader>fn", "<cmd>enew<cr>", desc = "New File" },
 
     -- Quit
     { "<leader>qq", "<cmd>qa<cr>", desc = "Quit All" },
