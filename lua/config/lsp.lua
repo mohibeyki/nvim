@@ -3,32 +3,38 @@ vim.lsp.config("*", {
   root_markers = { ".git" },
 })
 
--- C++
-vim.lsp.config.clangd = {
-  cmd = { "clangd" },
-  filetypes = { "c", "cpp", "objc", "objcpp" },
-}
+local is_meta = vim.fn.isdirectory("/usr/share/fb-editor-support/nvim") == 1
 
--- Rust
-vim.lsp.config.rust_analyzer = {
-  cmd = { "rust-analyzer" },
-  filetypes = { "rust" },
-}
+-- Meta plugin sets these LSPs up.
+if not is_meta then
+  -- C++
+  vim.lsp.config.clangd = {
+    cmd = { "clangd" },
+    filetypes = { "c", "cpp", "objc", "objcpp" },
+  }
 
--- Zig
+  -- Rust
+  vim.lsp.config.rust_analyzer = {
+    cmd = { "rust-analyzer" },
+    filetypes = { "rust" },
+  }
+
+  -- Go
+  vim.lsp.config.gopls = {
+    cmd = { "gopls" },
+    filetypes = { "go", "gomod", "gowork", "gotmpl" },
+  }
+
+  -- Enable stock LSP servers
+  vim.lsp.enable({ "clangd", "rust_analyzer", "zls", "gopls" })
+end
+
+-- Zig (no Meta equivalent, always enable if available)
+vim.lsp.enable({ "zls" })
 vim.lsp.config.zls = {
   cmd = { "zls" },
   filetypes = { "zig" },
 }
-
--- Go
-vim.lsp.config.gopls = {
-  cmd = { "gopls" },
-  filetypes = { "go", "gomod", "gowork", "gotmpl" },
-}
-
--- Enable LSP servers
-vim.lsp.enable({ "clangd", "rust_analyzer", "zls", "gopls" })
 
 -- LSP keymaps (set on LspAttach)
 vim.api.nvim_create_autocmd("LspAttach", {
