@@ -10,6 +10,7 @@ return {
     name = "meta.nvim",
     dependencies = {
       { "nvim-lua/plenary.nvim" },
+      { "neovim/nvim-lspconfig" },
       {
         "nvimtools/none-ls.nvim",
         event = { "BufReadPre", "BufNewFile" },

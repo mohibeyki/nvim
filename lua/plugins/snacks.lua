@@ -266,16 +266,4 @@ return {
     -- Quit
     { "<leader>qq", "<cmd>qa<cr>", desc = "Quit All" },
   },
-  init = function()
-    -- Open explorer when nvim is started with a directory
-    vim.api.nvim_create_autocmd("VimEnter", {
-      callback = function()
-        local arg = vim.fn.argv(0)
-        if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
-          vim.cmd("cd " .. vim.fn.fnameescape(arg))
-          require("snacks").picker.explorer()
-        end
-      end,
-    })
-  end,
 }
