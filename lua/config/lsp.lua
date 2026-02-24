@@ -15,6 +15,29 @@ if not is_meta then
   vim.lsp.config.rust_analyzer = {
     cmd = { "rust-analyzer" },
     filetypes = { "rust" },
+    settings = {
+      ["rust-analyzer"] = {
+        cargo = {
+          allFeatures = true,
+        },
+        checkOnSave = {
+          command = "clippy",
+        },
+        procMacro = {
+          enable = true,
+        },
+        inlayHints = {
+          bindingModeHints = { enable = true },
+          closingBraceHints = { enable = true, minLines = 10 },
+          closureReturnTypeHints = { enable = "with_block" },
+          lifetimeElisionHints = { enable = "skip_trivial", useParameterNames = true },
+          reborrowHints = { enable = "always" },
+          typeHints = { enable = true },
+          parameterHints = { enable = true },
+          maxLength = 25,
+        },
+      },
+    },
   }
 
   -- Go
@@ -37,6 +60,16 @@ vim.lsp.config.zls = {
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local buf = args.buf
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client and client.name == "rust_analyzer" then
+      if vim.lsp.inlay_hint then
+        if type(vim.lsp.inlay_hint) == "function" then
+          vim.lsp.inlay_hint(buf, true)
+        elseif vim.lsp.inlay_hint.enable then
+          vim.lsp.inlay_hint.enable(true, { bufnr = buf })
+        end
+      end
+    end
     -- Goto
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = buf, desc = "Goto Definition" })
     vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = buf, desc = "References" })
