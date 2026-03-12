@@ -3,34 +3,31 @@ return {
   version = "^5",
   lazy = false,
   ft = { "rust" },
-  opts = {
-    server = {
-      default_settings = {
-        ["rust-analyzer"] = {
-          checkOnSave = {
-            command = "clippy",
-          },
-          cargo = {
-            allFeatures = true,
-            loadOutDirsFromCheck = true,
-          },
-          procMacro = {
-            enable = true,
+  config = function()
+    vim.g.rustaceanvim = {
+      tools = {
+        hover_actions = {
+          auto_focus = true,
+        },
+      },
+      server = {
+        default_settings = {
+          ["rust-analyzer"] = {
+            checkOnSave = {
+              command = "clippy",
+            },
+            cargo = {
+              allFeatures = true,
+              loadOutDirsFromCheck = true,
+            },
+            procMacro = {
+              enable = true,
+            },
           },
         },
       },
-    },
-    dap = {
-      adapter = {
-        type = "server",
-        port = "${port}",
-        executable = {
-          command = "codelldb",
-          args = { "--port", "${port}" },
-        },
-      },
-    },
-  },
+    }
+  end,
   keys = {
     {
       "<leader>re",

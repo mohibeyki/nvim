@@ -276,14 +276,6 @@ return {
       end,
       desc = "Git Log (Line)",
     },
-    {
-      "<leader>gf",
-      function()
-        require("snacks").picker.git_log_file()
-      end,
-      desc = "Git Log (File)",
-    },
-
     -- Explorer (<leader>e)
     {
       "<leader>e",

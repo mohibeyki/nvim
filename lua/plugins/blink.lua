@@ -23,6 +23,9 @@ return {
     sources = {
       default = { "lsp", "path", "snippets", "buffer" },
     },
+    cmdline = {
+      sources = { "cmdline" },
+    },
     completion = {
       accept = {
         auto_brackets = {

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree -L 3 /home/mohi/workspace/personal/nvim -I '.git' 2>/dev/null || find /home/mohi/workspace/personal/nvim -not -path '*/.git/*' -type f | sort)",
+      "Bash(wc -l /home/mohi/workspace/personal/nvim/lua/plugins/*.lua)"
+    ]
+  }
+}

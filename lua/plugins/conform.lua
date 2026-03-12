@@ -21,10 +21,12 @@ return {
       c = { "clang-format" },
       zig = { "zigfmt" },
     },
-    format_on_save = {
-      timeout_ms = 500,
-      lsp_fallback = true,
-    },
+    format_on_save = function()
+      if vim.g.autoformat == false then
+        return
+      end
+      return { timeout_ms = 500, lsp_fallback = true }
+    end,
   },
   keys = {
     {

@@ -48,14 +48,26 @@ vim.lsp.config.zls = {
   filetypes = { "zig" },
 }
 
--- Diagnostics
+-- Lua (library paths injected by lazydev.nvim)
+vim.lsp.config.lua_ls = {
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  settings = {
+    Lua = {
+      runtime = { version = "LuaJIT" },
+      workspace = { checkThirdParty = false },
+    },
+  },
+}
+
+-- Diagnostics (rendering handled by tiny-inline-diagnostic.nvim)
 vim.diagnostic.config({
-  virtual_lines = true,
+  virtual_lines = false,
   virtual_text = false,
 })
 
 -- Enable LSP servers
-vim.lsp.enable({ "clangd", "gopls", "zls" })
+vim.lsp.enable({ "clangd", "gopls", "zls", "lua_ls" })
 
 -- LSP keymaps (set on LspAttach)
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -75,7 +87,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     -- Code actions
     vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { buffer = buf, desc = "Code Action" })
-    vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { buffer = buf, desc = "Rename" })
+    vim.keymap.set("n", "<leader>cr", function()
+      return ":IncRename " .. vim.fn.expand("<cword>")
+    end, { buffer = buf, desc = "Rename", expr = true })
 
     -- Inlay hints
     if vim.lsp.inlay_hint then

@@ -23,7 +23,7 @@ return {
       left_trunc_marker = "",
       right_trunc_marker = "",
       diagnostics = "nvim_lsp",
-      diagnostics_indicator = function(count, level, diagnostics_dict, context)
+      diagnostics_indicator = function(count, level, _diagnostics_dict, _context)
         local icon = level:match("error") and " " or " "
         return " " .. icon .. count
       end,

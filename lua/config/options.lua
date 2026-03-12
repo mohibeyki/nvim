@@ -38,6 +38,9 @@ vim.opt.undolevels = 10000
 vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
 
+-- Single global statusline
+vim.opt.laststatus = 3
+
 -- Clipboard (use system clipboard)
 vim.opt.clipboard = "unnamedplus"
 
