@@ -47,7 +47,7 @@ return {
     {
       "<leader>ghu",
       function()
-        require("gitsigns").undo_stage_hunk()
+        require("gitsigns").stage_hunk()
       end,
       desc = "Undo Stage Hunk",
     },
@@ -68,7 +68,7 @@ return {
     {
       "<leader>ghb",
       function()
-        require("gitsigns").blame_line({ full = true })
+        require("gitsigns").blame()
       end,
       desc = "Blame Line",
     },
