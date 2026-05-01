@@ -1,9 +1,7 @@
 return {
   "folke/persistence.nvim",
   event = "BufReadPre",
-  opts = {
-    need = 1, -- only save if at least 1 file is open
-  },
+  opts = {},
   keys = {
     {
       "<leader>qs",
@@ -11,6 +9,13 @@ return {
         require("persistence").load()
       end,
       desc = "Restore Session",
+    },
+    {
+      "<leader>qS",
+      function()
+        require("persistence").select()
+      end,
+      desc = "Select Session",
     },
     {
       "<leader>ql",
@@ -24,7 +29,7 @@ return {
       function()
         require("persistence").stop()
       end,
-      desc = "Don't Save Session",
+      desc = "Don't Save Current Session",
     },
   },
 }

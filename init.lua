@@ -1,6 +1,7 @@
--- Neovim 0.12 Setup with lazy.nvim
+-- Neovim Setup with lazy.nvim
+-- 1:1 match of nixvim configuration
 
--- Load options first
+-- Load options and core keymaps first
 require("config.options")
 
 -- Bootstrap and setup lazy.nvim

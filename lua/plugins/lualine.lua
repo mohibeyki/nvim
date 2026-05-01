@@ -2,79 +2,122 @@ return {
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
   opts = function()
-    local icons = {
-      diagnostics = {
-        Error = " ",
-        Warn = " ",
-        Hint = " ",
-        Info = " ",
-      },
-      git = {
-        added = " ",
-        modified = " ",
-        removed = " ",
-      },
-    }
-
     return {
       options = {
         theme = "auto",
-        globalstatus = vim.o.laststatus == 3,
-        disabled_filetypes = { statusline = { "dashboard", "alpha", "snacks_dashboard" } },
-        component_separators = { left = "", right = "" },
-        section_separators = { left = "", right = "" },
+        globalstatus = true,
+        disabled_filetypes = {
+          statusline = {
+            "dashboard",
+            "alpha",
+            "ministarter",
+            "snacks_dashboard",
+          },
+        },
       },
       sections = {
         lualine_a = { "mode" },
         lualine_b = { "branch" },
         lualine_c = {
+          -- Root directory
+          {
+            function()
+              local root = Snacks.git.get_root() or vim.fn.getcwd()
+              return vim.fn.fnamemodify(root, ":t")
+            end,
+            color = function()
+              return { fg = Snacks.util.color("Constant") }
+            end,
+          },
           {
             "diagnostics",
             symbols = {
-              error = icons.diagnostics.Error,
-              warn = icons.diagnostics.Warn,
-              info = icons.diagnostics.Info,
-              hint = icons.diagnostics.Hint,
+              error = " ",
+              warn = " ",
+              info = " ",
+              hint = " ",
             },
           },
-          { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-          { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
-        },
-        lualine_x = {
+          {
+            "filetype",
+            icon_only = true,
+            separator = "",
+            padding = { left = 1, right = 0 },
+          },
+          -- Pretty path
           {
             function()
-              ---@diagnostic disable-next-line: undefined-field
+              local path = vim.fn.expand("%:p")
+              if path == "" then
+                return ""
+              end
+              local root = Snacks.git.get_root() or vim.fn.getcwd()
+              local relative = vim.fn.fnamemodify(path, ":~:.")
+              if relative:sub(1, 1) == "~" then
+                relative = vim.fn.fnamemodify(path, ":~")
+              end
+              return relative
+            end,
+            symbols = {
+              modified = " ",
+              readonly = " ",
+              unnamed = "",
+            },
+          },
+        },
+        lualine_x = {
+          -- Snacks profiler status
+          {
+            function()
+              return Snacks.profiler.status()
+            end,
+            cond = function()
+              return Snacks.profiler.status() ~= ""
+            end,
+          },
+          -- noice command status
+          {
+            function()
               return require("noice").api.status.command.get()
             end,
             cond = function()
-              ---@diagnostic disable-next-line: undefined-field
               return package.loaded["noice"] and require("noice").api.status.command.has()
             end,
+            color = function()
+              return { fg = Snacks.util.color("Statement") }
+            end,
           },
+          -- noice mode status (macro recording etc.)
           {
             function()
-              ---@diagnostic disable-next-line: undefined-field
               return require("noice").api.status.mode.get()
             end,
             cond = function()
-              ---@diagnostic disable-next-line: undefined-field
               return package.loaded["noice"] and require("noice").api.status.mode.has()
             end,
+            color = function()
+              return { fg = Snacks.util.color("Constant") }
+            end,
           },
+          -- DAP status
           {
             function()
-              return require("lazy.status").updates()
+              return "  " .. require("dap").status()
             end,
             cond = function()
-              return require("lazy.status").has_updates()
+              return package.loaded["dap"] and require("dap").status() ~= ""
+            end,
+            color = function()
+              return { fg = Snacks.util.color("Debug") }
             end,
           },
+          -- diff
           {
             "diff",
             symbols = {
-              added = icons.git.added,
-              modified = icons.git.modified,
-              removed = icons.git.removed,
+              added = " ",
+              modified = " ",
+              removed = " ",
             },
             source = function()
               local gitsigns = vim.b.gitsigns_status_dict
@@ -89,24 +132,25 @@ return {
           },
         },
         lualine_y = {
-          { "progress", separator = " ", padding = { left = 1, right = 0 } },
-          { "location", padding = { left = 0, right = 1 } },
+          {
+            "progress",
+            separator = " ",
+            padding = { left = 1, right = 0 },
+          },
+          {
+            "location",
+            padding = { left = 0, right = 1 },
+          },
         },
         lualine_z = {
-          function()
-            return " " .. os.date("%R")
-          end,
+          {
+            function()
+              return "  " .. os.date("%R")
+            end,
+          },
         },
       },
-      inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = { "filename" },
-        lualine_x = { "location" },
-        lualine_y = {},
-        lualine_z = {},
-      },
-      extensions = { "lazy" },
+      extensions = {},
     }
   end,
 }

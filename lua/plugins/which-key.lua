@@ -1,45 +1,58 @@
 return {
   "folke/which-key.nvim",
   event = "VeryLazy",
-  opts = {},
-  config = function()
-    require("which-key").setup()
-
-    -- Register group names (LazyVim style)
-    require("which-key").add({
-      { "<leader>a", desc = "Swap with next parameter" },
-      { "<leader>A", desc = "Swap with prev parameter" },
-      { "<leader>b", group = "buffer" },
-      { "<leader>c", group = "code" },
-      { "<leader>cc", desc = "AI Chat" },
-      { "<leader>ci", desc = "Add Selection to Chat" },
-      { "<leader>cp", desc = "Inline AI Prompt" },
-      { "<leader>co", desc = "Outline (Aerial)" },
-      { "<leader>d", group = "debug" },
-      { "<leader>f", group = "file/find" },
-      { "<leader>g", group = "git" },
-      { "<leader>gh", group = "hunks" },
-      { "<leader>n", group = "notifications" },
-      { "<leader>nh", desc = "Notification History (snacks)" },
-      { "<leader>nH", desc = "Notification History (noice)" },
-      { "<leader>nl", desc = "Last Message" },
-      { "<leader>na", desc = "All Messages" },
-      { "<leader>nd", desc = "Dismiss All" },
-      { "<leader>q", group = "quit/session" },
-      { "<leader>qs", desc = "Restore Session" },
-      { "<leader>ql", desc = "Restore Last Session" },
-      { "<leader>qd", desc = "Don't Save Session" },
-      { "<leader>r", group = "rust" },
-      { "<leader>s", group = "search" },
-      { "<leader>t", group = "test" },
-      { "<leader>u", group = "ui" },
-      { "<leader>ut", desc = "Toggle Twilight" },
-      { "<leader>x", group = "diagnostics/quickfix" },
-      { "[", group = "prev" },
-      { "]", group = "next" },
-      { "g", group = "goto" },
-      { "gs", group = "surround" },
-      { "z", group = "fold" },
-    })
-  end,
+  opts = {
+    spec = {
+      { "<leader><tab>", group = "+tabs" },
+      {
+        "<leader>b",
+        group = "+buffer",
+        expand = function()
+          return require("which-key.extras").expand.buf()
+        end,
+      },
+      { "<leader>c", group = "+code" },
+      { "<leader>d", group = "+debug" },
+      { "<leader>dp", group = "+profiler" },
+      { "<leader>f", group = "+file/find" },
+      { "<leader>g", group = "+git" },
+      { "<leader>gh", group = "+hunks" },
+      { "<leader>m", group = "+markdown" },
+      { "<leader>n", group = "+notifications" },
+      { "<leader>o", group = "+opencode" },
+      { "[", group = "+prev" },
+      { "]", group = "+next" },
+      { "g", group = "+goto" },
+      { "gz", group = "+surround" },
+      { "<leader>q", group = "+quit/session" },
+      { "<leader>r", group = "+refactor" },
+      { "<leader>s", group = "+search" },
+      { "<leader>u", group = "+ui" },
+      {
+        "<leader>w",
+        group = "+windows",
+        proxy = "<c-w>",
+        expand = function()
+          return require("which-key.extras").expand.win()
+        end,
+      },
+      { "<leader>x", group = "+diagnostics/quickfix" },
+    },
+  },
+  keys = {
+    {
+      "<leader>?",
+      function()
+        require("which-key").show({ global = false })
+      end,
+      desc = "Buffer Keymaps (which-key)",
+    },
+    {
+      "<c-w><space>",
+      function()
+        require("which-key").show({ keys = "<c-w>", loop = true })
+      end,
+      desc = "Window Hydra Mode (which-key)",
+    },
+  },
 }

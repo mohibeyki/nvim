@@ -3,7 +3,6 @@ return {
   event = "VeryLazy",
   dependencies = {
     "MunifTanjim/nui.nvim",
-    "rcarriga/nvim-notify",
   },
   opts = {
     lsp = {
@@ -11,6 +10,19 @@ return {
         ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
         ["vim.lsp.util.stylize_markdown"] = true,
         ["cmp.entry.get_documentation"] = true,
+      },
+    },
+    routes = {
+      {
+        filter = {
+          event = "msg_show",
+          any = {
+            { find = "%d+L, %d+B" },
+            { find = "; after #%d+" },
+            { find = "; before #%d+" },
+          },
+        },
+        view = "mini",
       },
     },
     presets = {
@@ -21,28 +33,23 @@ return {
   },
   keys = {
     {
-      "<c-f>",
+      "<leader>n",
       function()
-        if not require("noice.lsp").scroll(4) then
-          return "<c-f>"
-        end
+        require("noice").cmd("history")
       end,
-      silent = true,
-      expr = true,
-      desc = "Scroll Forward",
-      mode = { "n", "i", "s" },
+      desc = "Notification History",
     },
     {
-      "<c-b>",
+      "<leader>un",
       function()
-        if not require("noice.lsp").scroll(-4) then
-          return "<c-b>"
-        end
+        require("noice").cmd("dismiss")
       end,
-      silent = true,
-      expr = true,
-      desc = "Scroll Backward",
-      mode = { "n", "i", "s" },
+      desc = "Dismiss All Notifications",
+    },
+    {
+      "<leader>sn",
+      "",
+      desc = "+noice",
     },
     {
       "<S-Enter>",
@@ -53,32 +60,63 @@ return {
       desc = "Redirect Cmdline",
     },
     {
-      "<leader>nl",
+      "<leader>snl",
       function()
         require("noice").cmd("last")
       end,
-      desc = "Last Message",
+      desc = "Noice Last Message",
     },
     {
-      "<leader>nH",
+      "<leader>snh",
       function()
         require("noice").cmd("history")
       end,
       desc = "Noice History",
     },
     {
-      "<leader>na",
+      "<leader>sna",
       function()
         require("noice").cmd("all")
       end,
-      desc = "All Messages",
+      desc = "Noice All",
     },
     {
-      "<leader>nd",
+      "<leader>snd",
       function()
         require("noice").cmd("dismiss")
       end,
-      desc = "Dismiss All (Noice)",
+      desc = "Dismiss All",
+    },
+    {
+      "<leader>snt",
+      function()
+        require("noice").cmd("pick")
+      end,
+      desc = "Noice Picker",
+    },
+    {
+      "<C-f>",
+      function()
+        if not require("noice.lsp").scroll(4) then
+          return "<C-f>"
+        end
+      end,
+      mode = { "i", "n", "s" },
+      expr = true,
+      silent = true,
+      desc = "Scroll Forward",
+    },
+    {
+      "<C-b>",
+      function()
+        if not require("noice.lsp").scroll(-4) then
+          return "<C-b>"
+        end
+      end,
+      mode = { "i", "n", "s" },
+      expr = true,
+      silent = true,
+      desc = "Scroll Backward",
     },
   },
 }

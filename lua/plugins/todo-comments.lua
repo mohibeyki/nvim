@@ -2,7 +2,58 @@ return {
   "folke/todo-comments.nvim",
   event = "VeryLazy",
   dependencies = { "nvim-lua/plenary.nvim" },
-  opts = {},
+  opts = {
+    highlight = {
+      before = "",
+      keyword = "wide",
+      after = "fg",
+      pattern = "@?(KEYWORDS)",
+    },
+    keywords = {
+      FIX = {
+        icon = " ",
+        color = "error",
+        alt = { "FIXME", "BUG", "FIXIT", "ISSUE" },
+      },
+      TODO = {
+        icon = " ",
+        color = "info",
+        alt = { "TASK", "TO DO" },
+      },
+      HACK = {
+        icon = " ",
+        color = "warning",
+      },
+      WARN = {
+        icon = " ",
+        color = "warning",
+        alt = { "WARNING", "WARN", "ATTENTION", "ATTN" },
+      },
+      PERF = {
+        icon = " ",
+        color = "default",
+        alt = { "OPTIMIZE", "PERFORMANCE", "OPTIM" },
+      },
+      NOTE = {
+        icon = " ",
+        color = "hint",
+        alt = { "INFO", "NOTE", "REVIEW" },
+      },
+      TEST = {
+        icon = " ",
+        color = "test",
+        alt = { "TESTING", "PASSED", "FAILED" },
+      },
+    },
+    colors = {
+      error = { "DiagnosticError", "ErrorMsg", "#DC2626" },
+      warning = { "DiagnosticWarn", "WarningMsg", "#FBBF24" },
+      info = { "DiagnosticInfo", "#2563EB" },
+      hint = { "DiagnosticHint", "#10B981" },
+      default = { "Identifier", "#7C3AED" },
+      test = { "Identifier", "#FF00FF" },
+    },
+  },
   keys = {
     {
       "]t",
@@ -17,28 +68,6 @@ return {
         require("todo-comments").jump_prev()
       end,
       desc = "Previous Todo Comment",
-    },
-    { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "Todo (Trouble)" },
-    {
-      "<leader>xT",
-      "<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>",
-      desc = "Todo/Fix/Fixme (Trouble)",
-    },
-    {
-      "<leader>st",
-      function()
-        ---@diagnostic disable-next-line: undefined-field
-        require("snacks").picker.todo_comments()
-      end,
-      desc = "Todo",
-    },
-    {
-      "<leader>sT",
-      function()
-        ---@diagnostic disable-next-line: undefined-field
-        require("snacks").picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
-      end,
-      desc = "Todo/Fix/Fixme",
     },
   },
 }

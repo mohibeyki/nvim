@@ -3,13 +3,22 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   opts = {
     signs = {
-      add = { text = "│" },
-      change = { text = "│" },
+      add = { text = "┃" },
+      change = { text = "┃" },
       delete = { text = "_" },
       topdelete = { text = "‾" },
       changedelete = { text = "~" },
       untracked = { text = "┆" },
     },
+    signs_staged = {
+      add = { text = "┃" },
+      change = { text = "┃" },
+      delete = { text = "_" },
+      topdelete = { text = "‾" },
+      changedelete = { text = "~" },
+      untracked = { text = "┆" },
+    },
+    signs_staged_enable = true,
   },
   keys = {
     -- Navigation
@@ -17,10 +26,9 @@ return {
       "]h",
       function()
         if vim.wo.diff then
-          vim.cmd.normal({ "]c", bang = true })
-        else
-          require("gitsigns").nav_hunk("next")
+          return "]c"
         end
+        package.loaded.gitsigns.next_hunk()
       end,
       desc = "Next Hunk",
     },
@@ -28,13 +36,27 @@ return {
       "[h",
       function()
         if vim.wo.diff then
-          vim.cmd.normal({ "[c", bang = true })
-        else
-          require("gitsigns").nav_hunk("prev")
+          return "[c"
         end
+        package.loaded.gitsigns.prev_hunk()
       end,
       desc = "Prev Hunk",
     },
+    {
+      "]H",
+      function()
+        package.loaded.gitsigns.nav_hunk("last")
+      end,
+      desc = "Last Hunk",
+    },
+    {
+      "[H",
+      function()
+        package.loaded.gitsigns.nav_hunk("first")
+      end,
+      desc = "First Hunk",
+    },
+    -- Actions
     { "<leader>ghs", ":Gitsigns stage_hunk<CR>", mode = { "n", "v" }, desc = "Stage Hunk" },
     { "<leader>ghr", ":Gitsigns reset_hunk<CR>", mode = { "n", "v" }, desc = "Reset Hunk" },
     {
@@ -45,13 +67,6 @@ return {
       desc = "Stage Buffer",
     },
     {
-      "<leader>ghu",
-      function()
-        require("gitsigns").stage_hunk()
-      end,
-      desc = "Undo Stage Hunk",
-    },
-    {
       "<leader>ghR",
       function()
         require("gitsigns").reset_buffer()
@@ -59,18 +74,18 @@ return {
       desc = "Reset Buffer",
     },
     {
-      "<leader>ghp",
+      "<leader>ghu",
       function()
-        require("gitsigns").preview_hunk()
+        require("gitsigns").undo_stage_hunk()
       end,
-      desc = "Preview Hunk",
+      desc = "Undo Stage Hunk",
     },
     {
-      "<leader>ghb",
+      "<leader>ghp",
       function()
-        require("gitsigns").blame()
+        require("gitsigns").preview_hunk_inline()
       end,
-      desc = "Blame Line",
+      desc = "Preview Hunk Inline",
     },
     {
       "<leader>ghd",
@@ -86,7 +101,19 @@ return {
       end,
       desc = "Diff This ~",
     },
-    -- Text object
-    { "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "GitSigns Select Hunk" },
+    {
+      "<leader>ghb",
+      function()
+        require("gitsigns").blame_line({ full = true })
+      end,
+      desc = "Blame Line",
+    },
+    {
+      "<leader>ghB",
+      function()
+        require("gitsigns").blame()
+      end,
+      desc = "Blame Buffer",
+    },
   },
 }
